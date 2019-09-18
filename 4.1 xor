@@ -1,0 +1,10 @@
+ini_string = "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"
+ini_string2 = "686974207468652062756c6c277320657965"
+
+res1 = "{0:08b}".format(int(ini_string, 16))
+res2 = "{0:08b}".format(int(ini_string2, 16))
+
+
+binary = bin(int(res1,2)^int(res2,2))
+toHex = hex(int(binary,2))
+print(toHex)
