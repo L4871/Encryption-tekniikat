@@ -1,0 +1,16 @@
+ini_string = "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"
+alphabet = 'AEIOUBCDFGHJKLMNPQRSTVXZWYaeioubcdfghjklmnpqrstvxzwy'
+
+
+#res1 = "{0:08b}".format(int(ini_string, 16))
+ciph = bytes.fromhex(ini_string)
+print(int(ord('a')))
+
+#print(ciph)
+
+for char in alphabet:
+    message = b''
+    for byte in ciph:
+        message += bytes([byte ^ ord(char)])
+    print("message is {} with key {}".format(message, char))
+
