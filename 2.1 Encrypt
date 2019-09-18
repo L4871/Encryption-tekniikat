@@ -1,0 +1,30 @@
+val = input("Insert k for Cesar Encrypt: ")
+message = input("Insert Plaintext for Caesar Encrypt: ")
+cipher = ""
+#a on 97 on z 122
+for i in message:
+    #Isot kirjaimet
+    if ord(i) >= 65 and ord(i) <= 90:
+        #aakkoset alusta
+        if ord(i) + int(val) >= 91:
+            letter = (ord(i) + int(val) - 90) + 64
+            cipher = cipher + chr(letter)
+
+        elif ord(i) + int(val) <=90:
+            letter = ord(i) + int(val)
+            cipher = cipher + chr(letter)
+    #Pienet kirjaimet
+    elif ord(i) >= 97 and ord(i) <= 122:
+        #aakkoset alusta
+        if ord(i) + int(val) >= 123:
+            letter = (ord(i) + int(val) - 122) + 96
+            cipher = cipher + chr(letter)
+
+        elif ord(i) + int(val) <=122:
+            letter = ord(i) + int(val)
+            cipher = cipher + chr(letter)
+
+    else:
+        specialChar = ord(i)
+        cipher = cipher + chr(specialChar)
+print(cipher)
