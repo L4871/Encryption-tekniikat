@@ -1,0 +1,33 @@
+val = input("Insert k for Cesar Decrypt: ")
+cipher = input("Insert ciphertext  for Caesar Decrypt: ")
+message = ""
+
+for i in cipher:
+
+    #Isot kirjaimet
+    if ord(i) >= 65 and ord(i) <= 90:
+        # Aakkoset alkavat alusta
+        if ord(i) - int(val) <=64:
+            letter = (ord(i) - int(val)) + 26
+            message = message + chr(letter)
+
+        elif ord(i) - int(val) <= 90:
+            letter = ord(i) - int(val)
+            message = message + chr(letter)
+    #Pienet kirjaimet
+    elif ord(i) >= 97 and ord(i) <= 122:
+        #Aakkoset alusta
+    #if ord(i) + int(val) >= 123:
+        if ord(i) - int(val) <= 96:
+            letter = (ord(i) - int(val)) + 26
+            message = message + chr(letter)
+
+
+        elif ord(i) - int(val) <= 121:
+            letter = ord(i) - int(val)
+            message = message + chr(letter)
+
+    else:
+        specialChar = ord(i)
+        message = message + chr(specialChar)
+print(message)
