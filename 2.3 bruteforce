@@ -1,0 +1,41 @@
+cipher = input("Insert ciphertext for Bruteforce: ")
+keyword = input("Insert keyword for Bruteforce (optional): ")
+
+
+
+for x in range(26):
+    message = ""
+    for i in cipher:
+
+        # Isot kirjaimet
+        if ord(i) >= 65 and ord(i) <= 90:
+            # Aakkoset alkavat alusta
+            if ord(i) - int(x) <= 64:
+                letter = (ord(i) - int(x)) + 26
+                message = message + chr(letter)
+
+            elif ord(i) - int(x) <= 90:
+                letter = ord(i) - int(x)
+                message = message + chr(letter)
+        # Pienet kirjaimet
+        elif ord(i) >= 97 and ord(i) <= 122:
+            # Aakkoset alusta
+            # if ord(i) + int(val) >= 123:
+            if ord(i) - int(x) <= 96:
+                letter = (ord(i) - int(x)) + 26
+                message = message + chr(letter)
+
+
+            elif ord(i) - int(x) <= 121:
+                letter = ord(i) - int(x)
+                message = message + chr(letter)
+
+        else:
+            specialChar = ord(i)
+            message = message + chr(specialChar)
+    if not keyword:
+        print("Key {0}: Decryprion = {1}".format(x,message))
+
+    else:
+        if keyword in message:
+            print("Key {0}: Decryprion = {1}".format(x,message))
