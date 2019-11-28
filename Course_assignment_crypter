@@ -1,0 +1,106 @@
+import hashlib
+import argparse
+
+# luo annetusta salasanasta avaimen 
+def generateKey(keySeed):
+    key_as_bytes = []
+    #muuttaa jokaisen merkin kokonaisluvuksi
+    for i in keySeed:
+        key_as_bytes.append(ord(i))
+    # lisää kokonaisluvut yhteen
+    key_as_bytes = sum(key_as_bytes)
+    # lasketaan luvun jakojäännös
+    key_as_bytes = key_as_bytes % 255
+    return key_as_bytes
+
+# laskee tiedoston md5 hashin
+def getFileHash(filename):
+    hasher = hashlib.md5()
+    with open(filename, 'rb') as file:
+        buf = file.read()
+        hasher.update(buf)
+    return hasher.hexdigest()
+
+# tallentaa hashin ja avaimen tekstitiedostoon
+def storeKeys(key, hash):
+    f = open("keys.txt", 'a')
+    f.write(key + ":" + hash + "\n")
+    f.close()
+
+# palauttaa avaimet ja hashit
+def getKeys():
+    f = open('keys.txt', 'r')
+    keys = []
+    for i in f:
+        i = i.replace("\n", "")
+        keys.append(i)
+    return keys
+
+# salaa tiedoston
+def encrypt(keySeed,filename):
+    # luo avaimen
+    key = generateKey(keySeed)
+    f = open(filename, 'rb')
+    file = f.read()
+    f.close()
+    # luo tavu jonon tiedostosta
+    file = bytearray(file)
+    # xor file with key
+    for index, value in enumerate(file):
+        # muuttaa bittijonon jokaisen bitin 
+        file[index] = value ^ key
+    #luo uuden tiedoston
+    fo = open("encrypted_" + filename, "wb")
+    fo.write(file)
+    fo.close()
+    filehash = getFileHash("encrypted_" + filename)
+    storeKeys(str(key), filehash)
+    print('{0} has been encrypted!'.format(filename))
+    print('Encrypted file is: {0}'.format("encrypted_" + filename))
+
+
+# purkaa salauksen
+def decrypt(keySeed,filename):
+    keys = getKeys()
+    # luo avaimen
+    key = generateKey(keySeed)
+    print(key)
+    hashh = getFileHash(filename)
+    keyHash = str(key) + ":" + hashh
+    #jos salattu tiedosto ja avain on avain tiedostossa pura salaus
+    if keyHash in keys:
+        f = open(filename, 'rb')
+        file = f.read()
+        f.close()
+        file = bytearray(file)
+        for index, value in enumerate(file):
+            file[index] = value ^ key
+        fo = open("decrypted_" + filename, "wb")
+        fo.write(file)
+        fo.close()
+        print("file decrypted successfully")
+    elif keyHash not in keys:
+        print("you gave wrong key")
+
+
+
+#komentorivin argumentit
+parser = argparse.ArgumentParser(description='Assignment 5')
+parser.add_argument("-m", help="Modes: encrypt/decrypt",type=str, required=True)
+parser.add_argument("--filename", help="Enter filename with file extension for example --filename textfile.txt",type=str, required=True)
+parser.add_argument("--key", help="Enter passphrase for encryption/decryption", required=True)
+
+args = parser.parse_args()
+mode = args.m
+filename = args.filename
+key = args.key
+
+
+
+if mode == 'encrypt':
+    encrypt(key,filename)
+elif mode == 'decrypt':
+    decrypt(key,filename)
+
+
+
