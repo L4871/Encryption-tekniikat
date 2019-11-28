@@ -1,0 +1,25 @@
+import sys
+import subprocess
+key =str('') #<0x01>
+#mitä tiedostoa koitetaan purkaa
+filename = 'encrypted_secret_file.txt'
+
+for i in range(1,400):
+	key = key +str('') #<0x01>
+	argument = "\'{}\'".format(key)
+	#komento joka suoritetaan
+	command = ['python','crypter.py', '-m', 'decrypt','--filename', filename,'--key',key]
+	# avaa uuden cmdn ja syöttää komennon komentoriville
+	proc = subprocess.Popen(command, shell="True", stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+	message = proc.stdout.read().decode()
+	print("trying key: {0}".format(message))
+	if 'file decrypted successfully' not in message:
+
+		pass
+	else:
+		print('correct key is: {0} '.format(i + 1))
+		exit()
+
+while proc.returncode is None:
+    proc.poll()
+
